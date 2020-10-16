@@ -1,6 +1,7 @@
 package mandrill
 
 import (
+	"errors"
 	"github.com/itsy-sh/mmailer"
 	"github.com/mattbaird/gochimp"
 )
@@ -46,23 +47,15 @@ func (m *Mandrill) Send(email mmailer.Email) (res []mmailer.Response, err error)
 			Type:  "cc",
 		})
 	}
-	//for _, a := range email.Bcc{
-	//	to = append(to, gochimp.Recipient{
-	//		Email: a.Email,
-	//		Name:  a.Name,
-	//		Type:  "bcc",
-	//	})
-	//}
-
 
 	message := gochimp.Message{
-		Headers:                 email.Headers,
-		FromName:                email.From.Name,
-		FromEmail:               email.From.Email,
-		To:                      to,
-		Subject:                 email.Subject,
-		Html:                    string(email.Html),
-		Text:                    string(email.Text),
+		Headers:   email.Headers,
+		FromName:  email.From.Name,
+		FromEmail: email.From.Email,
+		To:        to,
+		Subject:   email.Subject,
+		Html:      email.Html,
+		Text:      email.Text,
 	}
 
 	responses, err := c.MessageSend(message, false)
@@ -74,8 +67,12 @@ func (m *Mandrill) Send(email mmailer.Email) (res []mmailer.Response, err error)
 		res = append(res, mmailer.Response{
 			Service:   m.Name(),
 			MessageId: r.Id,
+			Email: r.Email,
 		})
 	}
 	return res, nil
 
+}
+func (m *Mandrill) UnmarshalPosthook(body []byte) ([]mmailer.Posthook, error){
+	return nil, errors.New("not implemented")
 }

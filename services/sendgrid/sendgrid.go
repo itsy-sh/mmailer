@@ -1,6 +1,7 @@
 package sendgrid
 
 import (
+	"errors"
 	"github.com/itsy-sh/mmailer"
 	"github.com/sendgrid/sendgrid-go"
 	"github.com/sendgrid/sendgrid-go/helpers/mail"
@@ -28,7 +29,7 @@ func (m *Sendgrid) Send(email mmailer.Email) (res []mmailer.Response, err error)
 
 	from := mail.NewEmail(email.From.Name, email.From.Email)
 
-	message := mail.NewSingleEmail(from, email.Subject, nil, string(email.Text), string(email.Html))
+	message := mail.NewSingleEmail(from, email.Subject, nil, email.Text, email.Html)
 
 	message.Headers = email.Headers
 
@@ -44,12 +45,6 @@ func (m *Sendgrid) Send(email mmailer.Email) (res []mmailer.Response, err error)
 			Address: a.Email,
 		})
 	}
-	//for _, a := range email.Bcc {
-	//	message.Personalizations[0].AddBCCs(&mail.Email{
-	//		Name:    a.Name,
-	//		Address: a.Email,
-	//	})
-	//}
 
 	response, err := m.newClient().Send(message)
 	if err != nil {
@@ -65,4 +60,7 @@ func (m *Sendgrid) Send(email mmailer.Email) (res []mmailer.Response, err error)
 
 	return res, nil
 
+}
+func (m *Sendgrid) UnmarshalPosthook(body []byte) ([]mmailer.Posthook, error){
+	return nil, errors.New("not implemented")
 }
