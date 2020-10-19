@@ -7,11 +7,13 @@ import (
 	"fmt"
 	"github.com/itsy-sh/mmailer"
 	"github.com/itsy-sh/mmailer/internal/config"
+	"github.com/itsy-sh/mmailer/services/generic"
 	"github.com/itsy-sh/mmailer/services/mailjet"
 	"github.com/itsy-sh/mmailer/services/mandrill"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"strings"
 )
 
@@ -147,6 +149,14 @@ func loadServices() {
 			}
 			fmt.Printf(" - Sendgrid: add the following posthook url %s/posthook?key=%s&service=sendgrid\n", config.Get().PublicURL, config.Get().PosthookKey)
 			services = append(services, mandrill.New(parts[1]))
+		case "generic":
+			u, err := url.Parse(strings.Join(parts[1:], ":"))
+			if err != nil{
+				log.Println("[Err] could not parse url, ", parts[1], " expected smtp://user:pass@host.com:port" )
+				continue
+			}
+			fmt.Printf(" - Generic: posthooks are not implmented, adding %s\n", u.String())
+			services = append(services, generic.New(u))
 		}
 
 	}

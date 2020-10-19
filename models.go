@@ -1,8 +1,17 @@
 package mmailer
 
+import "fmt"
+
 type Address struct {
 	Name  string `json:"name"`
 	Email string `json:"email"`
+}
+
+func (a Address) String() string{
+	if len(a.Name) == 0 {
+		return a.Email
+	}
+	return fmt.Sprintf("\"%s\" <%s>", a.Name, a.Email)
 }
 
 type Email struct {
