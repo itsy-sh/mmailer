@@ -167,14 +167,14 @@ func loadServices() {
 
 	var selects mmailer.SelectStrategy
 	fmt.Printf("Select Strategy: ")
-	switch config.Get().SelectStrategy {
-	case "Weighted":
+	switch strings.ToLower(config.Get().SelectStrategy) {
+	case "weighted":
 		fmt.Println("Weighted")
 		selects = mmailer.SelectWeighted
-	case "RoundRobin":
+	case "roundrobin":
 		fmt.Println("RoundRobin")
 		selects = mmailer.SelectRoundRobin()
-	case "Random":
+	case "random":
 		fallthrough
 	default:
 		fmt.Println("Random")
@@ -183,17 +183,17 @@ func loadServices() {
 
 	var retry mmailer.RetryStrategy
 	fmt.Printf("Retry Strategy:  ")
-	switch config.Get().RetryStrategy {
-	case "OneOther":
+	switch strings.ToLower(config.Get().RetryStrategy) {
+	case "oneother":
 		fmt.Println("OneOther")
 		retry = mmailer.RetryOneOther
-	case "Each":
+	case "each":
 		fmt.Println("Each")
 		retry = mmailer.RetryEach
-	case "Same":
+	case "same":
 		fmt.Println("Same")
 		retry = mmailer.RetrySame
-	case "None":
+	case "none":
 		fallthrough
 	default:
 		fmt.Println("None")
