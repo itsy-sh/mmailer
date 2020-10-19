@@ -8,7 +8,7 @@ mmailerd
  
 # Services:
 #  - Generic: posthooks are not implmented, adding smtp://user:pass@smtp.server.com:25
-#  - Mailjet: add the following posthook url  example.com/path/to/mmailer/posthook?key=&service=mailjet
+#  - Mailjet: add the following posthook url  example.com/path/to/mmailer/posthook?service=mailjet
 # Select Strategy: RoundRobin
 # Retry Strategy:  None
 
