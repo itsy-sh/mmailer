@@ -1,4 +1,5 @@
-
+# mMailer
+**Unify email services into 1 api for transactional email, have redundancies, traffic and avoid vendor locking**
 
 ```text
 SELECT_STRATEGY=RoundRobin \
